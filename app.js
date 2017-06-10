@@ -1,61 +1,65 @@
+var LENGTH_DATA = {};
+
 function calc_plan_wise_length(plane_1, plane_2, l_d, spacing){
  result = 0;
- result = (plane_1 + (2*l_d)) *((plane_2/(spacing/12))+1);
- // console.log(result);
+ result = ((plane_1 - 0.5) + (2*l_d)) *((plane_2/(spacing/12))+1);
  return result;
 }
 
+function get_output(result,dia){
+  no_of_rods = result / 39.5;
+  no_of_rods = (no_of_rods*(10/100) ) + no_of_rods;
+  weight = no_of_rods * ((Math.pow(dia,2)/162)*12);
+  return {
+    weight: weight.toFixed(2),
+    no_of_rods : no_of_rods.toFixed(2)
+  }
+}
+
+function frame_result(){
+  result_obj = {}
+  for (var key in LENGTH_DATA) {
+      if (LENGTH_DATA.hasOwnProperty(key)) {
+        total_length = 0
+        for(var i in LENGTH_DATA[key]) { total_length += LENGTH_DATA[key][i]; }
+        result_obj[key] = get_output(total_length,key);
+      }
+  }
+  return result_obj;
+}
+
+function update_length(dia,length_val){
+  if(LENGTH_DATA.hasOwnProperty(dia)){
+     LENGTH_DATA[dia].push(length_val);
+  }
+  else{
+    LENGTH_DATA[dia] = []
+    LENGTH_DATA[dia].push(length_val);
+  }
+}
+
 function calc_bbs(x,y,depth,x_s,y_s,x_dia,y_dia){
-  //defining inputs
 
-  //in feet
-  // x = 5;
-  // y = 6;
-  // depth = 2;
-
-  //in inches
-  // x_s = 6;
-  // y_s = 8;
-
-  //in mm
-  // x_dia = 10;
-  // y_dia = 10;
-
-  // console.log(x);
-  // console.log(y);
-  // console.log(depth);
-  // console.log(x_s);
-  // console.log(y_s);
-  // console.log(x_dia);
-  // console.log(y_dia);
-
- same_dia = false;
- if(x_dia == y_dia)
-   same_dia = true;
 
   l_d = depth - 0.5;
 
   x_l = calc_plan_wise_length(y,x,l_d,x_s);
   y_l = calc_plan_wise_length(x,y,l_d,y_s);
 
-  total = x_l + y_l;
+  update_length(x_dia,x_l);
+  update_length(y_dia,y_l);
 
-  no_of_rods = Math.ceil(total / 39.5);
-
-  weight = 0;
-  if(same_dia){
-    weight = no_of_rods * ((Math.pow(x_dia,2)/162)*12);
-  }
-
-  return {
-    weight : Math.ceil(weight),
-    no_of_rods : no_of_rods
-  }
-  // console.log("No of Rods" +no_of_rods);
-  // console.log("Weight" + weight);
-  // console.log("Weight" + Math.ceil(weight));
+  obj = {}
+  obj[x_dia] = x_l;
+  obj[y_dia] = y_l;
+  return obj;
 
 }
 
-// x = calc_bbs();
-// console.log(x);
+x = calc_bbs(5,6,2,6,8,10,8);
+console.log(x);
+y = calc_bbs(4,5,2,6,8,10,8);
+console.log(y);
+
+ans = frame_result()
+console.log(ans);
