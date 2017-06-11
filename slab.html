@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <script type="text/javascript" src="slab.js"></script>
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+     
+      var _cc = 1;
+      for ( var p = 1; p <= _cc; p++ ) {
+          jQuery('input[name="footing['+p+'][nos]"]').val(2);
+          jQuery('input[name="footing['+p+'][length]"]').val(5);
+          jQuery('input[name="footing['+p+'][breath]"]').val(6);
+          jQuery('input[name="footing['+p+'][x_s]"]').val(6);
+          jQuery('input[name="footing['+p+'][y_s]"]').val(8);
+          jQuery('input[name="footing['+p+'][x_dia]"]').val(10);
+          jQuery('input[name="footing['+p+'][y_dia]"]').val(8);
+       }
+
+      jQuery(document).on( 'click' , '#calc_bbs' , function(e){
+        e.preventDefault();
+        var no_of_rows = jQuery('table#bbc tbody tr').length;
+        // console.log(no_of_rows);
+        for (var i = 1; i <= no_of_rows; i++) {
+      			var nos       = parseInt(jQuery('input[name="footing['+i+'][nos]"]').val());
+            var x         = parseInt(jQuery('input[name="footing['+i+'][length]"]').val());
+            var y         = parseInt(jQuery('input[name="footing['+i+'][breath]"]').val());
+            var x_s       = parseInt(jQuery('input[name="footing['+i+'][x_s]"]').val());
+            var y_s       = parseInt(jQuery('input[name="footing['+i+'][y_s]"]').val());
+            var x_dia     = parseInt(jQuery('input[name="footing['+i+'][x_dia]"]').val());
+            var y_dia     = parseInt(jQuery('input[name="footing['+i+'][y_dia]"]').val());
+            var response  = calc_bbs(nos,x,y,x_s,y_s,x_dia,y_dia);
+            console.log(response);
+        }
+
+        // get final result
+        var final_result = frame_result();
+        // render data to popup
+        // console.log(final_result);
+
+        var html = '';
+        for (var mm in final_result) {
+          html += '<tr>';
+          var _tmp = final_result[mm];
+          html += '<td>'+mm+'</td>';
+          html += '<td>'+_tmp.weight+'</td>';
+          html += '<td>'+_tmp.no_of_rods+'</td>';
+          html += '</tr>';
+        }
+        jQuery('#summary_view_data').html(html);
+        // show the model
+        jQuery('#resultmodal').modal('show');
+      });
+    });
+  </script>
+    <style>
+    #bbc thead tr th {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid"">
+    <div class="row">
+      <div class="col-md-12">
+        <table id="bbc" class="table table-responsive table-bordered">
+          <thead>
+            <tr>
+              <th colspan="2">Slab</th>
+              <th colspan="2">Size</th>
+              <th colspan="2">Diameter</th>
+              <th colspan="2">Spacing</th>
+            </tr>
+            <tr>
+              <th>Name</th>
+              <th>Nos</th>
+              <th>Length</th>
+              <th>Breath</th>
+              <th>X</th>
+              <th>Y</th>
+              <th>X</th>
+              <th>Y</th>
+            </tr>
+          </thead>
+          <tbody>
+            <form action="http://localhost/cm/response.php" id="bbc_form">
+            <tr>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[1][name]" class="form-control">
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[1][nos]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">Nos</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[1][length]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">ft</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[1][breath]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">ft</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[1][x_dia]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">mm</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[1][y_dia]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">mm</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[1][x_s]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">in</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[1][y_s]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">in</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[2][name]" class="form-control">
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[2][nos]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">Nos</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[2][length]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">ft</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[2][breath]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">ft</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[2][x_dia]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">mm</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[2][y_dia]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">mm</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[2][x_s]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">in</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[2][y_s]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">in</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[3][name]" class="form-control">
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[3][nos]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">Nos</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[3][length]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">ft</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[3][breath]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">ft</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[3][x_dia]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">mm</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[3][y_dia]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">mm</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[3][x_s]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">in</span>
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" name="footing[3][y_s]" class="form-control">
+                  <span class="input-group-addon" id="basic-addon2">in</span>
+                </div>
+              </td>
+            </tr>
+            </form>
+          </tbody>
+        </table>
+        <button type="button" id="calc_bbs" class="btn btn-sm btn-success" name="button">Calculate</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" tabindex="-1" role="dialog" id="resultmodal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Results</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+        	<div class="col-md-12">
+        		<div>
+				  <!-- Nav tabs -->
+				  <ul class="nav nav-tabs" role="tablist">
+				    <li role="presentation" class="active"><a href="#summary_view" aria-controls="summary_view" role="tab" data-toggle="tab">Summary</a></li>
+				    <li role="presentation"><a href="#detailed_view" aria-controls="detailed_view" role="tab" data-toggle="tab">Detailed</a></li>
+				  </ul>
+
+				  <!-- Tab panes -->
+				  <div class="tab-content">
+				    <div role="tabpanel" class="tab-pane active" id="summary_view">
+				    	<table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <td>Dia</td>
+                    <td>Weight</td>
+                    <td>No of Rods</td>
+                    <tbody id="summary_view_data">
+              
+                    </tbody>
+                  </tr>
+                </thead>
+              </table>
+				    </div>
+				    <div role="tabpanel" class="tab-pane" id="detailed_view">
+				    	
+				    </div>
+				  </div>
+
+				</div>
+        	</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</body>
+</html>

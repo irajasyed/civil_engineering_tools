@@ -1,102 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-  <script type="text/javascript" src="app.js"></script>
-  <script type="text/javascript" src="jquery.js"></script>
-  <script type="text/javascript">
-    jQuery(document).ready(function(){
-      jQuery(document).on( 'click' , '#calc_bbs' , function(){
-          var x         = parseInt(jQuery('input[name="x"]').val());
-          var y         = parseInt(jQuery('input[name="y"]').val());
-          var depth     = parseInt(jQuery('input[name="depth"]').val());
-          var x_s       = parseInt(jQuery('input[name="x_s"]').val());
-          var y_s       = parseInt(jQuery('input[name="y_s"]').val());
-          var x_dia     = parseInt(jQuery('input[name="x_dia"]').val());
-          var y_dia     = parseInt(jQuery('input[name="y_dia"]').val());
-          var response  = calc_bbs(x,y,depth,x_s,y_s,x_dia,y_dia);
-          jQuery('#total_num_of_rods').html(response.no_of_rods);
-          jQuery('#weight').html(response.weight);
-      });
-    });
-  </script>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<script type="text/javascript" src="jquery.js"></script>
+  	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <table class="table table-responsive">
-          <thead>
-            <tr>
-              <th>Length</th>
-              <th>Breath</th>
-              <th>Depth</th>
-              <th>X Spacing</th>
-              <th>Y Spacing</th>
-              <th>X Dia meter</th>
-              <th>Y Dia meter</th>
-              <th>Total Number of Rods</th>
-              <th>Total Weight</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <div class="input-group">
-                  <input type="text" name="x" class="form-control">
-                  <span class="input-group-addon" id="basic-addon2">ft</span>
-                </div>
-              </td>
-              <td>
-                <div class="input-group">
-                  <input type="text" name="y" class="form-control">
-                  <span class="input-group-addon" id="basic-addon2">ft</span>
-                </div>
-              </td>
-              <td>
-                <div class="input-group">
-                  <input type="text" name="depth" class="form-control">
-                  <span class="input-group-addon" id="basic-addon2">ft</span>
-                </div>
-              </td>
-              <td>
-                <div class="input-group">
-                  <input type="text" name="x_s" class="form-control">
-                  <span class="input-group-addon" id="basic-addon2">in</span>
-                </div>
-              </td>
-              <td>
-                <div class="input-group">
-                  <input type="text" name="y_s" class="form-control">
-                  <span class="input-group-addon" id="basic-addon2">in</span>
-                </div>
-              </td>
-              <td>
-                <div class="input-group">
-                  <input type="text" name="x_dia" class="form-control">
-                  <span class="input-group-addon" id="basic-addon2">mm</span>
-                </div>
-              </td>
-              <td>
-                <div class="input-group">
-                  <input type="text" name="y_dia" class="form-control">
-                  <span class="input-group-addon" id="basic-addon2">mm</span>
-                </div>
-              </td>
-              <td id="total_num_of_rods">
-              0
-              </td>
-              <td id="weight">0</td>
-            </tr>
-          </tbody>
-        </table>
-        <button type="button" id="calc_bbs" class="btn btn-sm btn-success" name="button">Calculate</button>
-      </div>
-    </div>
-  </div>
+	 <nav class="navbar navbar-inverse">
+	    <div class="container">
+	        <div class="navbar-header">
+	            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	                <span class="sr-only">Toggle navigation</span>
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	            </button>
+	            <a class="navbar-brand" href="#">Barbending Estimation</a>
+	        </div>
+	    </div>
+	</nav>
+		
+	<div class="container">
+		<div class="row">
+			<a href="footing.html">
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h1 class="text-center">Footing</h1>
+						</div>
+					</div>
+				</div>
+			</a>
+			<a href="slab.html">
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h1 class="text-center">Slab</h1>
+						</div>
+					</div>
+				</div>
+			</a>
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h1 class="text-center">Column</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h1 class="text-center">Beam</h1>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h1 class="text-center">Sun Shade</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </body>
 </html>
