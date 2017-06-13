@@ -7,8 +7,8 @@ function calc_length(l,dia){
 }
 
 function calc_stirrup(l,b,d,stirrup_spacing){
-  console.log(((((b - 2) + (d - 2))*2)+2) * (l/stirrup_spacing));
-  return ((((b - 2) + (d - 2))*2)+2) * (l/stirrup_spacing);
+  one_stirrup = ((((b - 2) + (d - 2))*2)+2)
+  return  (one_stirrup/12)* (((l * 12)/stirrup_spacing)+1);
 }
 
 function calc_length_data(l,b,d,dia_rod_data,stirrup_dia,stirrup_spacing){
@@ -25,40 +25,37 @@ function calc_length_data(l,b,d,dia_rod_data,stirrup_dia,stirrup_spacing){
     return LENGTH_DATA;
 }
 
-function main(l,b,d,dia_rod_data,stirrup_dia,stirrup_spacing){
+function main(l,b,d,dia_rod_data,stirrup_dia,stirrup_spacing , multiple_index){
   LENGTH_DATA = calc_length_data(l,b,d,dia_rod_data,stirrup_dia,stirrup_spacing);
 
-  console.log("LENGTH_DATA");
-  console.log(LENGTH_DATA);
-
   for(var dia in LENGTH_DATA){
+    column_length = ((dia_rod_data[dia] * LENGTH_DATA[dia]) * multiple_index)
     if(TOTAL_LENGTH.hasOwnProperty(dia)){
-      TOTAL_LENGTH[dia] = TOTAL_LENGTH[dia] + (dia_rod_data[dia] * LENGTH_DATA[dia])
+      TOTAL_LENGTH[dia] = TOTAL_LENGTH[dia] + column_length;
     }
     else{
-      TOTAL_LENGTH[dia] = dia_rod_data[dia] * LENGTH_DATA[dia]
+      TOTAL_LENGTH[dia] = column_length;
     }
   }
 
   //STIRRUP CALCULATION
+  STIRRUP_DATA = calc_stirrup(l,b,d,stirrup_spacing) * multiple_index;
   if(TOTAL_LENGTH.hasOwnProperty(stirrup_dia)){
-    TOTAL_LENGTH[stirrup_dia] = TOTAL_LENGTH[stirrup_dia] + calc_stirrup(l,b,d,stirrup_spacing);
+    TOTAL_LENGTH[stirrup_dia] = TOTAL_LENGTH[stirrup_dia] + STIRRUP_DATA;
   }
   else{
-    TOTAL_LENGTH[stirrup_dia] = calc_stirrup(l,b,d,stirrup_spacing);
+    TOTAL_LENGTH[stirrup_dia] = STIRRUP_DATA;
   }
 
-  console.log("TOTAL LENGTH------------");
-  console.log(TOTAL_LENGTH);
 }
 
 function get_output(){
   ROD_COUNT = {}
   for(var dia in TOTAL_LENGTH){
       obj = {}
-      obj["rod_count"] = TOTAL_LENGTH[dia] / 39.5
+      no_of_rods = TOTAL_LENGTH[dia] / 39.5
+      obj["rod_count"] = no_of_rods + (no_of_rods *(10/100))
       obj["weight"] = obj["rod_count"] * ((Math.pow(dia,2)/Math.pow(16,2))*12)
-      // ROD_COUNT[dia] = {}
       ROD_COUNT[dia] = obj
   }
   return ROD_COUNT;
@@ -67,7 +64,7 @@ function get_output(){
 dia_rod_data = {}
 dia_rod_data[16] = 4
 dia_rod_data[12] = 2
-main(10,9,12,dia_rod_data,8,6)
+main(10,9,12,dia_rod_data,8,6,2)
 ans = get_output()
 console.log("OUTPUT----------------");
 console.log(ans);
