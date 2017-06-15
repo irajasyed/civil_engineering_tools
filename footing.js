@@ -44,8 +44,8 @@ function calc_bbs(mutiple,x,y,depth,x_s,y_s,x_dia,y_dia){
 
   l_d = depth - 0.5;
 
-  x_l = calc_plan_wise_length(y,x,l_d,x_s);
-  y_l = calc_plan_wise_length(x,y,l_d,y_s);
+  x_l = calc_plan_wise_length(x,y,l_d,x_s);
+  y_l = calc_plan_wise_length(y,x,l_d,y_s);
 
   // added mutiple
   if( mutiple != 0 ) {

@@ -1,8 +1,15 @@
 var LENGTH_DATA = {};
 
-function calc_plan_wise_length(plane_1, plane_2, spacing){
+function calc_plan_wise_length(plane_1, plane_2, spacing,slab_type){
  result = 0;
- result = ((plane_1 - 0.5) ) *((plane_2/(spacing/12))+1);
+ if (slab_type ==1)
+ result = ((plane_1 + 5) ) *((plane_2/(spacing/12))+1);
+ else if (slab_type == 2) {
+    result = ((plane_1 + 1.5) ) *((plane_2/(spacing/12))+1);
+ }
+ else {
+    result = ((plane_1 + 1+1.5*plane_1) ) *((plane_2/(spacing/12))+1);
+ }
  return result;
 }
 
@@ -38,11 +45,12 @@ function update_length(dia,length_val){
   }
 }
 
-function calc_bbs(mutiple,x,y,x_s,y_s,x_dia,y_dia){
+function calc_bbs(mutiple,x,y,x_s,y_s,x_dia,y_dia,slab_type){
 
-  x_l = calc_plan_wise_length(y,x,x_s);
-  y_l = calc_plan_wise_length(x,y,y_s);
-
+  x_l = calc_plan_wise_length(x,y,x_s,slab_type);
+  y_l = calc_plan_wise_length(y,x,y_s,slab_type);
+console.log(x_l);
+console.log(y_l);
   // added mutiple
   if( mutiple != 0 ) {
     x_l = mutiple * x_l;
@@ -58,3 +66,4 @@ function calc_bbs(mutiple,x,y,x_s,y_s,x_dia,y_dia){
   return obj;
 
 }
+console.log(calc_bbs(2,5,6,6,8,10,8,3));
